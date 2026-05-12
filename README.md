@@ -3,7 +3,7 @@
 ## Descrição
 Sistema para estimular o reconhecimento do mérito estudantil através de uma moeda virtual. Professores distribuem moedas aos alunos, que podem trocá-las por vantagens em empresas parceiras.
 
-Alunos: Heleno Junipr e Nalanda Luiza
+Alunos: Heleno Junior e Nalanda Luiza
 ---
 
 ## 🛠️ Stack Tecnológica
