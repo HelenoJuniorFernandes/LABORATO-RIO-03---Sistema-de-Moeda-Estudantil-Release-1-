@@ -11,7 +11,6 @@ import TransferenciaPage from './pages/TransferenciaPage';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 function Sidebar() {
-  const location = useLocation();
   const { user, logout } = useAuth();
 
   const navItems = [
