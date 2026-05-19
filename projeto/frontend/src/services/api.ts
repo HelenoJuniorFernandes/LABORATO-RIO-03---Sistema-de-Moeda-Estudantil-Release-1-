@@ -43,6 +43,11 @@ export const instituicaoService = {
   listar: () => api.get<InstituicaoEnsino[]>('/api/instituicoes').then(r => r.data),
 };
 
+// ── Professores ──────────────────────────────────────
+export const professorService = {
+  atualizar: (id: number, prof: any) => api.put(`/api/professores/${id}`, prof).then(r => r.data),
+};
+
 // ── Vantagens ────────────────────────────────────────
 export const vantagemService = {
   listar: () => api.get<any[]>('/api/vantagens').then(r => r.data),
