@@ -37,8 +37,8 @@ function Sidebar() {
   return (
     <aside className="sidebar" style={{ background: '#111827', color: '#f3f4f6' }}>
       <div className="sidebar-header" style={{ padding: '25px 20px', borderBottom: '1px solid #1f2937' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: 0, background: 'linear-gradient(90deg, #60A5FA, #34D399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Moeda🪙</h1>
-        <span style={{ fontSize: '0.85rem', color: '#9CA3AF', letterSpacing: '1px', textTransform: 'uppercase' }}>Sistema Estudantil</span>
+        <h1 style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: 0, background: 'linear-gradient(90deg, #60A5FA, #34D399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Moeda Estudantil</h1>
+        <span style={{ fontSize: '0.80rem', color: '#9CA3AF', letterSpacing: '1px', textTransform: 'uppercase' }}>Sistema Universitário</span>
       </div>
 
       <nav className="sidebar-nav" style={{ padding: '20px 15px' }}>
@@ -151,11 +151,17 @@ function Navbar() {
       borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
       boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
     }}>
-      <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#1e3c72' }}>
-        Olá, {user?.nome || 'Usuário'}! 👋
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <img src="/logo.png" alt="Logo Moeda Estudantil" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
+        <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#1e3c72' }}>
+          Sistema de Moeda Estudantil
+        </div>
       </div>
       
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ fontSize: '0.9rem', color: '#666' }}>
+          Olá, <strong>{user?.nome || 'Usuário'}</strong> 👋
+        </div>
         <div style={{ fontSize: '0.9rem', color: '#666', background: '#f0f0f0', padding: '5px 10px', borderRadius: '12px' }}>
           {user?.role === 'ROLE_ALUNO' ? '🎓 Aluno' : user?.role === 'ROLE_PROFESSOR' ? '👨‍🏫 Professor' : user?.role === 'ROLE_EMPRESA' ? '🏢 Empresa' : 'Administrador'}
         </div>
@@ -185,7 +191,7 @@ function MainLayout() {
   return (
     <div className="app-layout">
       <Sidebar />
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', marginLeft: '260px' }}>
         <Navbar />
         <main className="main-content" style={{ flex: 1, overflowY: 'auto' }}>
           <Routes>

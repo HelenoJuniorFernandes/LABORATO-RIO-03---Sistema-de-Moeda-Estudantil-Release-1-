@@ -42,7 +42,8 @@ const LoginPage: React.FC = () => {
           padding: '40px',
           textAlign: 'center'
         }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '20px', textShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>Moeda🪙</h1>
+          <img src="/logo.png" alt="Logo Moeda Estudantil" style={{ width: '120px', height: '120px', borderRadius: '24px', marginBottom: '20px', boxShadow: '0 8px 32px rgba(0,0,0,0.3)', objectFit: 'cover' }} />
+          <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '20px', textShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>Moeda Estudantil</h1>
           <p style={{ fontSize: '1.2rem', maxWidth: '500px', lineHeight: '1.6' }}>
             Transformando o mérito acadêmico em recompensas reais. Reconheça, ganhe e troque por vantagens exclusivas.
           </p>

@@ -114,10 +114,8 @@ body {
 .nav-link .icon { font-size: 1.1rem; }
 
 .main-content {
-  margin-left: 260px;
   flex: 1;
   padding: 32px;
-  max-width: calc(100vw - 260px);
 }
 
 /* Page header */
