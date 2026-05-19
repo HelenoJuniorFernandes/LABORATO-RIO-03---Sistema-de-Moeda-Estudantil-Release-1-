@@ -31,6 +31,11 @@
 
 ---
 
+## 🔗 Links Úteis
+* 🌐 **Aplicação Online (Render):** [https://laborato-rio-03-sistema-de-moeda-5ts5.onrender.com](https://laborato-rio-03-sistema-de-moeda-5ts5.onrender.com)
+
+---
+
 ## 📚 Índice
 - [Sobre o Projeto](#-sobre-o-projeto)
 - [Funcionalidades Principais](#-funcionalidades-principais)
@@ -175,7 +180,7 @@ moeda-estudantil-sprint02/
 | 👤 Nome | 💼 Perfil |
 |---------|-------------|
 | Heleno Junior Fernandes | [GitHub](https://github.com/HelenoJuniorFernandes) |
-| *Insira outros colaboradores aqui* |  |
+| Nalanda | Colaboradora |
 
 ---
 
