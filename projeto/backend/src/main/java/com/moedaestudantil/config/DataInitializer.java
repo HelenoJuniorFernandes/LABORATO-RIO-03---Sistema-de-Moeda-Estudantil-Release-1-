@@ -80,10 +80,8 @@ public class DataInitializer implements CommandLineRunner {
 
             // Criar Transação de Teste para Extrato
             com.moedaestudantil.model.Transacao t1 = new com.moedaestudantil.model.Transacao();
-            t1.setRemetenteId(p.getId());
-            t1.setRemetenteNome(p.getNome());
-            t1.setDestinatarioId(a.getId());
-            t1.setDestinatarioNome(a.getNome());
+            t1.setRemetente(p);
+            t1.setDestinatario(a);
             t1.setValor(new java.math.BigDecimal("300.0"));
             t1.setMotivo("Bom desempenho no projeto final da disciplina.");
             t1.setDataTransacao(java.time.LocalDateTime.now().minusDays(1));
@@ -95,7 +93,6 @@ public class DataInitializer implements CommandLineRunner {
             v1.setCusto(new java.math.BigDecimal("100.0"));
             v1.setFoto("https://images.unsplash.com/photo-1544947950-fa07a98d237f");
             v1.setEmpresaParceira(e);
-            v1.setEmpresaParceiraNome(e.getNome());
             vantagemRepository.save(v1);
 
             com.moedaestudantil.model.Vantagem v2 = new com.moedaestudantil.model.Vantagem();
@@ -104,7 +101,6 @@ public class DataInitializer implements CommandLineRunner {
             v2.setCusto(new java.math.BigDecimal("50.0"));
             v2.setFoto("https://images.unsplash.com/photo-1555939594-58d7cb561ad1");
             v2.setEmpresaParceira(e);
-            v2.setEmpresaParceiraNome(e.getNome());
             vantagemRepository.save(v2);
 
             com.moedaestudantil.model.Vantagem v3 = new com.moedaestudantil.model.Vantagem();
@@ -113,7 +109,6 @@ public class DataInitializer implements CommandLineRunner {
             v3.setCusto(new java.math.BigDecimal("200.0"));
             v3.setFoto("https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8");
             v3.setEmpresaParceira(e);
-            v3.setEmpresaParceiraNome(e.getNome());
             vantagemRepository.save(v3);
 
             System.out.println("✅ Transações e Vantagens geradas com sucesso!");
