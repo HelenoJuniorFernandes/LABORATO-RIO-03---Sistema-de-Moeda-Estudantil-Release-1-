@@ -17,6 +17,7 @@ api.interceptors.request.use((config) => {
 // ── Auth ───────────────────────────────────────────
 export const authService = {
   login: (credenciais: any) => api.post('/api/auth/login', credenciais).then(r => r.data),
+  me: () => api.get('/api/auth/me').then(r => r.data),
 };
 
 // ── Alunos ──────────────────────────────────────────

@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 interface UserData {
   id: number;
-  sub: string;
+  nome: string;
+  email: string;
   role: string;
-  exp: number;
-  iss: string;
+  saldoMoedas?: number;
 }
 
 interface AuthContextData {
@@ -17,6 +17,7 @@ interface AuthContextData {
   loading: boolean;
   login: (credenciais: any) => Promise<void>;
   logout: () => void;
+  updateBalance: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -26,31 +27,48 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  async function loadUser() {
+    try {
+      const userData = await authService.me();
+      setUser({
+        id: userData.id,
+        nome: userData.nome,
+        email: userData.email,
+        role: userData.authorities[0]?.authority || 'ROLE_USER',
+        saldoMoedas: userData.saldoMoedas
+      });
+    } catch (err) {
+      logout();
+    }
+  }
+
   useEffect(() => {
     const storagedToken = localStorage.getItem('token');
 
     if (storagedToken) {
-      try {
-        const decoded = jwtDecode<UserData>(storagedToken);
-        if (decoded.exp * 1000 < Date.now()) {
-          logout();
-        } else {
-          setUser(decoded);
-        }
-      } catch (err) {
+      const decoded = jwtDecode<any>(storagedToken);
+      if (decoded.exp * 1000 < Date.now()) {
         logout();
+      } else {
+        loadUser();
       }
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setLoading(false);
+    }
+  }, [user]);
 
   async function login(credenciais: any) {
     const response = await authService.login(credenciais);
     const token = response.token;
 
     localStorage.setItem('token', token);
-    const decoded = jwtDecode<UserData>(token);
-    setUser(decoded);
+    await loadUser();
     navigate('/');
   }
 
@@ -60,8 +78,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     navigate('/login');
   }
 
+  async function updateBalance() {
+    if (user) {
+      await loadUser();
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, loading, login, logout }}>
+    <AuthContext.Provider value={{ signed: !!user, user, loading, login, logout, updateBalance }}>
       {children}
     </AuthContext.Provider>
   );
