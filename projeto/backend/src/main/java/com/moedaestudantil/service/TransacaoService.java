@@ -47,15 +47,14 @@ public class TransacaoService {
         Aluno aluno = alunoRepository.findById(dto.getAlunoId())
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        if (professor.getSaldoMoedas().compareTo(dto.getValor()) < 0) {
-            throw new RuntimeException("Saldo insuficiente");
-        }
+        // Validação de saldo removida para o professor ter saldo ilimitado
+        // if (professor.getSaldoMoedas().compareTo(dto.getValor()) < 0) {
+        //     throw new RuntimeException("Saldo insuficiente");
+        // }
 
-        // Atualizar saldos
-        professor.setSaldoMoedas(professor.getSaldoMoedas().subtract(dto.getValor()));
+        // Atualizar saldo apenas do aluno (professor tem moedas infinitas agora)
         aluno.setSaldoMoedas(aluno.getSaldoMoedas().add(dto.getValor()));
 
-        professorRepository.save(professor);
         alunoRepository.save(aluno);
 
         // Criar transação
