@@ -58,7 +58,7 @@ function Sidebar() {
           ))}
         </div>
         
-        {user?.role === 'ROLE_USER' && (
+        {true && (
           <div className="nav-section">
             <div className="nav-label">Cadastros</div>
             {adminItems.map(item => (
