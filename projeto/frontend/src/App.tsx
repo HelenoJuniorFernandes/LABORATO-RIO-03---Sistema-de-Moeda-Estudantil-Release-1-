@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, NavLink, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import AlunosPage from './pages/AlunosPage';
 import EmpresasPage from './pages/EmpresasPage';
