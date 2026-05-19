@@ -6,6 +6,7 @@ import com.moedaestudantil.model.Aluno;
 import com.moedaestudantil.model.InstituicaoEnsino;
 import com.moedaestudantil.repository.AlunoRepository;
 import com.moedaestudantil.repository.InstituicaoEnsinoRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,9 @@ public class AlunoService {
 
     @Autowired
     private InstituicaoEnsinoRepository instituicaoEnsinoRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<AlunoDTO> listarTodos() {
         return alunoRepository.findAll()
@@ -44,6 +48,9 @@ public class AlunoService {
         if (alunoRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email já cadastrado: " + dto.getEmail());
         }
+        if (dto.getSenha() == null || dto.getSenha().isBlank()) {
+            throw new IllegalArgumentException("Senha é obrigatória");
+        }
 
         InstituicaoEnsino instituicao = instituicaoEnsinoRepository.findById(dto.getInstituicaoEnsinoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada com ID: " + dto.getInstituicaoEnsinoId()));
@@ -51,7 +58,7 @@ public class AlunoService {
         Aluno aluno = new Aluno();
         aluno.setNome(dto.getNome());
         aluno.setEmail(dto.getEmail());
-        aluno.setSenha(dto.getSenha());
+        aluno.setSenha(passwordEncoder.encode(dto.getSenha()));
         aluno.setCpf(dto.getCpf());
         aluno.setRg(dto.getRg());
         aluno.setEndereco(dto.getEndereco());
@@ -80,7 +87,7 @@ public class AlunoService {
         aluno.setNome(dto.getNome());
         aluno.setEmail(dto.getEmail());
         if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
-            aluno.setSenha(dto.getSenha());
+            aluno.setSenha(passwordEncoder.encode(dto.getSenha()));
         }
         aluno.setCpf(dto.getCpf());
         aluno.setRg(dto.getRg());

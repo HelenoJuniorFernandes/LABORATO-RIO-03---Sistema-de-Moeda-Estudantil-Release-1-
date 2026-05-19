@@ -14,7 +14,6 @@ public class AlunoDTO {
     @NotBlank(message = "Email é obrigatório")
     private String email;
 
-    @NotBlank(message = "Senha é obrigatória")
     private String senha;
 
     @NotBlank(message = "CPF é obrigatório")

@@ -30,6 +30,7 @@ function Sidebar() {
   ];
 
   const professorItems = [
+    { path: '/alunos', label: 'Alunos', icon: '👨‍🎓' },
     { path: '/transferir', label: 'Enviar Moedas', icon: '💸' },
     { path: '/extrato', label: 'Meu Extrato', icon: '📄' },
   ];
