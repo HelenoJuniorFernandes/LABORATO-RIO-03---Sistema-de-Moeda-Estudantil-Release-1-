@@ -2,9 +2,22 @@ import axios from 'axios';
 import { Aluno, EmpresaParceira, InstituicaoEnsino } from '../types';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
   headers: { 'Content-Type': 'application/json' },
 });
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ── Auth ───────────────────────────────────────────
+export const authService = {
+  login: (credenciais: any) => api.post('/api/auth/login', credenciais).then(r => r.data),
+};
 
 // ── Alunos ──────────────────────────────────────────
 export const alunoService = {
@@ -27,6 +40,22 @@ export const empresaService = {
 // ── Instituições de Ensino ───────────────────────────
 export const instituicaoService = {
   listar: () => api.get<InstituicaoEnsino[]>('/api/instituicoes').then(r => r.data),
+};
+
+// ── Vantagens ────────────────────────────────────────
+export const vantagemService = {
+  listar: () => api.get<any[]>('/api/vantagens').then(r => r.data),
+  listarMinhas: () => api.get<any[]>('/api/vantagens/empresa').then(r => r.data),
+  criar: (vantagem: any) => api.post<any>('/api/vantagens', vantagem).then(r => r.data),
+  atualizar: (id: number, vantagem: any) => api.put<any>(`/api/vantagens/${id}`, vantagem).then(r => r.data),
+  deletar: (id: number) => api.delete(`/api/vantagens/${id}`),
+};
+
+// ── Transações ───────────────────────────────────────
+export const transacaoService = {
+  extrato: () => api.get<any[]>('/api/transacoes/extrato').then(r => r.data),
+  transferir: (dados: any) => api.post<any>('/api/transacoes/transferir', dados).then(r => r.data),
+  resgatar: (dados: any) => api.post<any>('/api/transacoes/resgatar', dados).then(r => r.data),
 };
 
 export default api;
