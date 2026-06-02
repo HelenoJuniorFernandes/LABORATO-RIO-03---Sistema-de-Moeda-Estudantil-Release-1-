@@ -47,14 +47,16 @@ public class TransacaoService {
         Aluno aluno = alunoRepository.findById(dto.getAlunoId())
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        // Validação de saldo removida para o professor ter saldo ilimitado
-        // if (professor.getSaldoMoedas().compareTo(dto.getValor()) < 0) {
-        //     throw new RuntimeException("Saldo insuficiente");
-        // }
+        // Validação de saldo
+        if (professor.getSaldoMoedas().compareTo(dto.getValor()) < 0) {
+            throw new RuntimeException("Saldo insuficiente");
+        }
 
-        // Atualizar saldo apenas do aluno (professor tem moedas infinitas agora)
+        // Atualizar saldo do professor e do aluno
+        professor.setSaldoMoedas(professor.getSaldoMoedas().subtract(dto.getValor()));
         aluno.setSaldoMoedas(aluno.getSaldoMoedas().add(dto.getValor()));
 
+        professorRepository.save(professor);
         alunoRepository.save(aluno);
 
         // Criar transação
@@ -67,10 +69,15 @@ public class TransacaoService {
 
         transacaoRepository.save(transacao);
 
-        // Enviar email
+        // Enviar email para o aluno
         String msg = String.format("Olá %s, você recebeu %s moedas do professor %s pelo motivo: %s",
                 aluno.getNome(), dto.getValor(), professor.getNome(), dto.getMotivo());
         emailService.enviarEmail(aluno.getEmail(), "Você recebeu novas moedas!", msg);
+
+        // Enviar email para o professor
+        String msgProfessor = String.format("Olá %s, você enviou %s moedas para o aluno %s pelo motivo: %s",
+                professor.getNome(), dto.getValor(), aluno.getNome(), dto.getMotivo());
+        emailService.enviarEmail(professor.getEmail(), "Confirmação de Envio de Moedas", msgProfessor);
 
         return convertToDTO(transacao);
     }
