@@ -51,4 +51,7 @@ public class Transacao {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vantagem_id")
     private Vantagem vantagem; // Opcional, preenchido se a transação for resgate de vantagem
+
+    @Column(nullable = true)
+    private String cupom;
 }

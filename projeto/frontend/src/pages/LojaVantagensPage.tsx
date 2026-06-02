@@ -3,6 +3,7 @@ import { vantagemService, transacaoService } from '../services/api';
 
 const LojaVantagensPage: React.FC = () => {
   const [vantagens, setVantagens] = useState<any[]>([]);
+  const [modal, setModal] = useState<{show: boolean, type: 'success' | 'error', message: string, cupom?: string} | null>(null);
 
   const loadVantagens = () => {
     vantagemService.listar().then(setVantagens).catch(console.error);
@@ -15,10 +16,10 @@ const LojaVantagensPage: React.FC = () => {
   const handleResgatar = async (vantagemId: number) => {
     if (!window.confirm('Deseja realmente resgatar esta vantagem?')) return;
     try {
-      await transacaoService.resgatar({ vantagemId });
-      alert('Vantagem resgatada com sucesso! Verifique seu email para o cupom.');
+      const resp = await transacaoService.resgatar({ vantagemId });
+      setModal({ show: true, type: 'success', message: 'Vantagem resgatada com sucesso! Um e-mail com este cupom foi enviado.', cupom: resp.cupom });
     } catch (err) {
-      alert('Erro ao resgatar vantagem. Verifique seu saldo.');
+      setModal({ show: true, type: 'error', message: 'Erro ao resgatar vantagem. Verifique seu saldo.' });
     }
   };
 
@@ -45,6 +46,33 @@ const LojaVantagensPage: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {modal?.show && (
+        <div className="modal-overlay">
+          <div className="modal" style={{ maxWidth: '400px', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>
+              {modal.type === 'success' ? '✅' : '❌'}
+            </div>
+            <h3 className="modal-title" style={{ justifyContent: 'center' }}>
+              {modal.type === 'success' ? 'Sucesso!' : 'Atenção'}
+            </h3>
+            <p style={{ color: 'var(--text-light)', marginBottom: '20px' }}>{modal.message}</p>
+            
+            {modal.cupom && (
+              <div style={{ background: '#fff', padding: '15px', borderRadius: '8px', display: 'inline-block', marginBottom: '20px' }}>
+                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${modal.cupom}`} alt="QR Code Cupom" />
+                <div style={{ color: '#000', fontWeight: 'bold', marginTop: '10px', fontSize: '1.2rem', letterSpacing: '2px' }}>
+                  {modal.cupom}
+                </div>
+              </div>
+            )}
+            
+            <button className="btn btn-primary" onClick={() => setModal(null)} style={{ width: '100%', justifyContent: 'center' }}>
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

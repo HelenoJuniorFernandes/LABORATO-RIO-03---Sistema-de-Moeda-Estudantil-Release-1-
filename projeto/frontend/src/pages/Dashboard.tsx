@@ -80,21 +80,21 @@ export default function Dashboard() {
       )}
 
       <div style={{
-        background: '#fff',
+        background: 'var(--bg-card)',
         borderRadius: '16px',
         padding: '30px',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
-        border: '1px solid #f0f0f0'
+        boxShadow: 'var(--shadow-card)',
+        border: '1px solid var(--border)'
       }}>
-        <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', color: '#333' }}>Sobre a Plataforma</h3>
-        <p style={{ color: '#666', fontSize: '1rem', lineHeight: '1.8' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', color: 'var(--text)' }}>Sobre a Plataforma</h3>
+        <p style={{ color: 'var(--text-light)', fontSize: '1rem', lineHeight: '1.8' }}>
           O <strong>Sistema de Moeda Estudantil</strong> permite que professores reconheçam o mérito de seus alunos através de uma moeda virtual. 
           Os alunos podem acumular moedas pelo seu desempenho e trocá-las por vantagens exclusivas em empresas parceiras, 
           como descontos em restaurantes, cursos, livros e materiais.
         </p>
         <div style={{ marginTop: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           {['🚀 React', '💎 Spring Boot', '🔒 JWT Auth', '✨ Glassmorphism', '🪙 Render'].map(tag => (
-            <span key={tag} style={{ background: '#f0f2f5', padding: '6px 12px', borderRadius: '20px', fontSize: '0.85rem', color: '#333', fontWeight: '500' }}>
+            <span key={tag} style={{ background: 'var(--bg-input)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.85rem', color: 'var(--text)', border: '1px solid var(--border)', fontWeight: '500' }}>
               {tag}
             </span>
           ))}

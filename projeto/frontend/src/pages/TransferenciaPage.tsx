@@ -6,6 +6,7 @@ const TransferenciaPage: React.FC = () => {
   const [alunoId, setAlunoId] = useState('');
   const [valor, setValor] = useState('');
   const [motivo, setMotivo] = useState('');
+  const [modal, setModal] = useState<{show: boolean, type: 'success' | 'error', message: string} | null>(null);
 
   useEffect(() => {
     alunoService.listar().then(setAlunos).catch(console.error);
@@ -15,12 +16,12 @@ const TransferenciaPage: React.FC = () => {
     e.preventDefault();
     try {
       await transacaoService.transferir({ alunoId: Number(alunoId), valor: Number(valor), motivo });
-      alert('Moedas enviadas com sucesso!');
+      setModal({ show: true, type: 'success', message: 'Moedas enviadas com sucesso!' });
       setAlunoId('');
       setValor('');
       setMotivo('');
     } catch (err) {
-      alert('Erro ao transferir moedas. Verifique seu saldo.');
+      setModal({ show: true, type: 'error', message: 'Erro ao transferir moedas. Verifique seu saldo e tente novamente.' });
     }
   };
 
@@ -55,6 +56,23 @@ const TransferenciaPage: React.FC = () => {
           <button type="submit" className="btn btn-primary" style={{ padding: '12px' }}>Enviar Moedas</button>
         </form>
       </div>
+
+      {modal?.show && (
+        <div className="modal-overlay">
+          <div className="modal" style={{ maxWidth: '400px', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>
+              {modal.type === 'success' ? '✅' : '❌'}
+            </div>
+            <h3 className="modal-title" style={{ justifyContent: 'center' }}>
+              {modal.type === 'success' ? 'Sucesso!' : 'Atenção'}
+            </h3>
+            <p style={{ color: 'var(--text-light)', marginBottom: '20px' }}>{modal.message}</p>
+            <button className="btn btn-primary" onClick={() => setModal(null)} style={{ width: '100%', justifyContent: 'center' }}>
+              Entendi
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

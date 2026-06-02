@@ -72,7 +72,7 @@ export default function PerfilPage() {
         <p style={{ opacity: 0.9 }}>Mantenha suas informações atualizadas.</p>
       </div>
 
-      <div style={{ background: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+      <div style={{ background: 'var(--bg-card)', padding: '30px', borderRadius: '16px', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border)' }}>
         {erro && <div className="alert alert-error">{erro}</div>}
         {sucesso && <div className="alert alert-success">{sucesso}</div>}
 

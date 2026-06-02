@@ -146,11 +146,11 @@ function Navbar() {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '15px 30px',
-      background: 'rgba(255, 255, 255, 0.7)',
+      background: 'rgba(17, 24, 39, 0.7)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
-      borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
+      borderBottom: '1px solid var(--border)',
+      boxShadow: 'var(--shadow-card)'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
         <img src="/logo.png" alt="Logo Moeda Estudantil" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
@@ -160,10 +160,10 @@ function Navbar() {
       </div>
       
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <div style={{ fontSize: '0.9rem', color: '#666' }}>
+        <div style={{ fontSize: '0.9rem', color: 'var(--text-light)' }}>
           Olá, <strong>{user?.nome || 'Usuário'}</strong> 👋
         </div>
-        <div style={{ fontSize: '0.9rem', color: '#666', background: '#f0f0f0', padding: '5px 10px', borderRadius: '12px' }}>
+        <div style={{ fontSize: '0.9rem', color: 'var(--text-light)', background: 'var(--bg-input)', padding: '5px 10px', borderRadius: '12px' }}>
           {user?.role === 'ROLE_ALUNO' ? '🎓 Aluno' : user?.role === 'ROLE_PROFESSOR' ? '👨‍🏫 Professor' : user?.role === 'ROLE_EMPRESA' ? '🏢 Empresa' : 'Administrador'}
         </div>
         
@@ -192,7 +192,7 @@ function MainLayout() {
   return (
     <div className="app-layout">
       <Sidebar />
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', marginLeft: '260px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden' }}>
         <Navbar />
         <main className="main-content" style={{ flex: 1, overflowY: 'auto' }}>
           <Routes>

@@ -109,17 +109,28 @@ public class TransacaoService {
         transacao.setVantagem(vantagem);
         transacao.setDataTransacao(LocalDateTime.now());
 
+        String cupom = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        transacao.setCupom(cupom);
+
         transacaoRepository.save(transacao);
 
-        String cupom = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-
         // Email para o aluno
-        String msgAluno = String.format("Olá %s, você resgatou a vantagem '%s'. Seu código de cupom é: %s",
-                aluno.getNome(), vantagem.getNome(), cupom);
+        String msgAluno = String.format(
+                "<h3>Resgate Efetuado com Sucesso!</h3>" +
+                "<p>Olá <b>%s</b>,</p>" +
+                "<p>Você resgatou a vantagem <b>'%s'</b> com sucesso.</p>" +
+                "<p>Seu código de cupom é: <strong style='font-size: 18px; color: #3b7cff;'>%s</strong></p>" +
+                "<p>Apresente o QR Code abaixo no estabelecimento:</p>" +
+                "<img src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%s' alt='QR Code Cupom' style='margin-top: 10px; border-radius: 8px;' />",
+                aluno.getNome(), vantagem.getNome(), cupom, cupom);
         emailService.enviarEmail(aluno.getEmail(), "Resgate de Vantagem - Cupom", msgAluno);
 
         // Email para a empresa
-        String msgEmpresa = String.format("Olá, a vantagem '%s' foi resgatada pelo aluno %s. Código do cupom para conferência: %s",
+        String msgEmpresa = String.format(
+                "<h3>Nova Vantagem Resgatada</h3>" +
+                "<p>Olá,</p>" +
+                "<p>A vantagem <b>'%s'</b> foi resgatada pelo aluno <b>%s</b>.</p>" +
+                "<p>Código do cupom para conferência: <strong>%s</strong></p>",
                 vantagem.getNome(), aluno.getNome(), cupom);
         emailService.enviarEmail(empresa.getEmail(), "Nova Vantagem Resgatada", msgEmpresa);
 
@@ -149,6 +160,7 @@ public class TransacaoService {
             dto.setVantagemId(transacao.getVantagem().getId());
             dto.setVantagemNome(transacao.getVantagem().getNome());
         }
+        dto.setCupom(transacao.getCupom());
         return dto;
     }
 }

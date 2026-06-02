@@ -16,4 +16,5 @@ public class TransacaoDTO {
     private LocalDateTime dataTransacao;
     private Long vantagemId;
     private String vantagemNome;
+    private String cupom;
 }

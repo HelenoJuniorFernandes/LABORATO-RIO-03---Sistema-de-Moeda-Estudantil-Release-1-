@@ -44,8 +44,9 @@ body {
   display: flex;
   flex-direction: column;
   padding: 0;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 
 .sidebar-logo {
@@ -268,7 +269,7 @@ label {
   text-transform: uppercase;
 }
 
-input, select {
+input, select, textarea {
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -278,9 +279,10 @@ input, select {
   font-size: 0.9rem;
   transition: border-color 0.15s;
   outline: none;
+  resize: vertical;
 }
 
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px rgba(59,124,255,0.1);
 }

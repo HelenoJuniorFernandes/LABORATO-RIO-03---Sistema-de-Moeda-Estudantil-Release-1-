@@ -55,7 +55,7 @@ public class DataInitializer implements CommandLineRunner {
 
             com.moedaestudantil.model.Aluno a = new com.moedaestudantil.model.Aluno();
             a.setNome("Aluno Teste");
-            a.setEmail("aluno@teste.com");
+            a.setEmail("juniorheleno1006@gmail.com");
             a.setSenha(passwordEncoder.encode("123456"));
             a.setCpf("22222222222");
             a.setRg("MG-123");
