@@ -3,7 +3,7 @@ import { vantagemService, transacaoService } from '../services/api';
 
 const LojaVantagensPage: React.FC = () => {
   const [vantagens, setVantagens] = useState<any[]>([]);
-  const [modal, setModal] = useState<{show: boolean, type: 'success' | 'error', message: string, cupom?: string} | null>(null);
+  const [modal, setModal] = useState<{show: boolean, type: 'success' | 'error' | 'confirm', message: string, cupom?: string, onConfirm?: () => void} | null>(null);
 
   const loadVantagens = () => {
     vantagemService.listar().then(setVantagens).catch(console.error);
@@ -13,8 +13,17 @@ const LojaVantagensPage: React.FC = () => {
     loadVantagens();
   }, []);
 
-  const handleResgatar = async (vantagemId: number) => {
-    if (!window.confirm('Deseja realmente resgatar esta vantagem?')) return;
+  const handleResgatarClick = (vantagemId: number) => {
+    setModal({
+      show: true,
+      type: 'confirm',
+      message: 'Deseja realmente resgatar esta vantagem?',
+      onConfirm: () => efetuarResgate(vantagemId)
+    });
+  };
+
+  const efetuarResgate = async (vantagemId: number) => {
+    setModal(null);
     try {
       const resp = await transacaoService.resgatar({ vantagemId });
       setModal({ show: true, type: 'success', message: 'Vantagem resgatada com sucesso! Um e-mail com este cupom foi enviado.', cupom: resp.cupom });
@@ -40,7 +49,7 @@ const LojaVantagensPage: React.FC = () => {
             <p style={{ color: '#666', flexGrow: 1 }}>{v.descricao}</p>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
               <strong style={{ color: '#007BFF' }}>{v.custo} Moedas</strong>
-              <button className="btn btn-primary" onClick={() => handleResgatar(v.id)}>Resgatar</button>
+              <button className="btn btn-primary" onClick={() => handleResgatarClick(v.id)}>Resgatar</button>
             </div>
             <small style={{ color: '#999' }}>Parceiro: {v.empresaParceiraNome}</small>
           </div>
@@ -51,10 +60,10 @@ const LojaVantagensPage: React.FC = () => {
         <div className="modal-overlay">
           <div className="modal" style={{ maxWidth: '400px', textAlign: 'center' }}>
             <div style={{ fontSize: '3rem', marginBottom: '10px' }}>
-              {modal.type === 'success' ? '✅' : '❌'}
+              {modal.type === 'success' ? '✅' : modal.type === 'error' ? '❌' : '❓'}
             </div>
             <h3 className="modal-title" style={{ justifyContent: 'center' }}>
-              {modal.type === 'success' ? 'Sucesso!' : 'Atenção'}
+              {modal.type === 'success' ? 'Sucesso!' : modal.type === 'error' ? 'Atenção' : 'Confirmação'}
             </h3>
             <p style={{ color: 'var(--text-light)', marginBottom: '20px' }}>{modal.message}</p>
             
@@ -67,9 +76,18 @@ const LojaVantagensPage: React.FC = () => {
               </div>
             )}
             
-            <button className="btn btn-primary" onClick={() => setModal(null)} style={{ width: '100%', justifyContent: 'center' }}>
-              Fechar
-            </button>
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              {modal.type === 'confirm' ? (
+                <>
+                  <button className="btn btn-ghost" onClick={() => setModal(null)} style={{ flex: 1 }}>Cancelar</button>
+                  <button className="btn btn-primary" onClick={modal.onConfirm} style={{ flex: 1 }}>Confirmar</button>
+                </>
+              ) : (
+                <button className="btn btn-primary" onClick={() => setModal(null)} style={{ width: '100%', justifyContent: 'center' }}>
+                  Fechar
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

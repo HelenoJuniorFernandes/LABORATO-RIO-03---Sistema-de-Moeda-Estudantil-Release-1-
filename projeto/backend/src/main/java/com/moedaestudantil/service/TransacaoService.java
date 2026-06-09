@@ -70,13 +70,23 @@ public class TransacaoService {
         transacaoRepository.save(transacao);
 
         // Enviar email para o aluno
-        String msg = String.format("Olá %s, você recebeu %s moedas do professor %s pelo motivo: %s",
+        String htmlTemplate = "<div style=\"font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #0a0e1a; color: #e2e8f0; border-radius: 12px; border: 1px solid #1e2d45;\">" +
+                "<div style=\"text-align: center; padding-bottom: 15px; border-bottom: 1px solid #1e2d45;\">" +
+                "<h2 style=\"color: #3b7cff; margin: 0; letter-spacing: 1px;\">Moeda Estudantil</h2>" +
+                "</div>" +
+                "<div style=\"padding: 20px; background-color: #111827; border-radius: 8px; margin-top: 20px;\">%s</div>" +
+                "<p style=\"margin-top: 30px; font-size: 12px; color: #64748b; text-align: center;\">Este é um e-mail automático. Por favor, não responda.</p>" +
+                "</div>";
+
+        String corpoAluno = String.format("<p>Olá <b style=\"color: #f59e0b;\">%s</b>,</p><p>Você recebeu <b style=\"color: #f59e0b;\">%s</b> moedas do professor <b style=\"color: #3b7cff;\">%s</b>.</p><p style=\"color: #94a3b8;\"><b>Motivo:</b> %s</p>",
                 aluno.getNome(), dto.getValor(), professor.getNome(), dto.getMotivo());
+        String msg = String.format(htmlTemplate, corpoAluno);
         emailService.enviarEmail(aluno.getEmail(), "Você recebeu novas moedas!", msg);
 
         // Enviar email para o professor
-        String msgProfessor = String.format("Olá %s, você enviou %s moedas para o aluno %s pelo motivo: %s",
+        String corpoProfessor = String.format("<p>Olá <b style=\"color: #3b7cff;\">%s</b>,</p><p>Você enviou <b style=\"color: #f59e0b;\">%s</b> moedas para o aluno <b style=\"color: #f59e0b;\">%s</b>.</p><p style=\"color: #94a3b8;\"><b>Motivo:</b> %s</p>",
                 professor.getNome(), dto.getValor(), aluno.getNome(), dto.getMotivo());
+        String msgProfessor = String.format(htmlTemplate, corpoProfessor);
         emailService.enviarEmail(professor.getEmail(), "Confirmação de Envio de Moedas", msgProfessor);
 
         return convertToDTO(transacao);
@@ -114,24 +124,34 @@ public class TransacaoService {
 
         transacaoRepository.save(transacao);
 
+        String htmlTemplate = "<div style=\"font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #0a0e1a; color: #e2e8f0; border-radius: 12px; border: 1px solid #1e2d45;\">" +
+                "<div style=\"text-align: center; padding-bottom: 15px; border-bottom: 1px solid #1e2d45;\">" +
+                "<h2 style=\"color: #3b7cff; margin: 0; letter-spacing: 1px;\">Moeda Estudantil</h2>" +
+                "</div>" +
+                "<div style=\"padding: 20px; background-color: #111827; border-radius: 8px; margin-top: 20px;\">%s</div>" +
+                "<p style=\"margin-top: 30px; font-size: 12px; color: #64748b; text-align: center;\">Este é um e-mail automático. Por favor, não responda.</p>" +
+                "</div>";
+
         // Email para o aluno
-        String msgAluno = String.format(
-                "<h3>Resgate Efetuado com Sucesso!</h3>" +
-                "<p>Olá <b>%s</b>,</p>" +
-                "<p>Você resgatou a vantagem <b>'%s'</b> com sucesso.</p>" +
-                "<p>Seu código de cupom é: <strong style='font-size: 18px; color: #3b7cff;'>%s</strong></p>" +
-                "<p>Apresente o QR Code abaixo no estabelecimento:</p>" +
-                "<img src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%s' alt='QR Code Cupom' style='margin-top: 10px; border-radius: 8px;' />",
+        String corpoAluno = String.format(
+                "<h3 style=\"color: #10b981; margin-top: 0;\">Resgate Efetuado com Sucesso!</h3>" +
+                "<p>Olá <b style=\"color: #f59e0b;\">%s</b>,</p>" +
+                "<p>Você resgatou a vantagem <b style=\"color: #3b7cff;\">'%s'</b> com sucesso.</p>" +
+                "<p>Seu código de cupom é: <strong style=\"font-size: 18px; color: #f59e0b; letter-spacing: 2px;\">%s</strong></p>" +
+                "<p style=\"color: #94a3b8; font-size: 14px;\">Apresente o QR Code abaixo no estabelecimento:</p>" +
+                "<div style=\"text-align: center; margin-top: 15px; background: #fff; padding: 10px; display: inline-block; border-radius: 8px;\"><img src=\"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%s\" alt=\"QR Code Cupom\" style=\"display: block;\" /></div>",
                 aluno.getNome(), vantagem.getNome(), cupom, cupom);
+        String msgAluno = String.format(htmlTemplate, corpoAluno);
         emailService.enviarEmail(aluno.getEmail(), "Resgate de Vantagem - Cupom", msgAluno);
 
         // Email para a empresa
-        String msgEmpresa = String.format(
-                "<h3>Nova Vantagem Resgatada</h3>" +
+        String corpoEmpresa = String.format(
+                "<h3 style=\"color: #3b7cff; margin-top: 0;\">Nova Vantagem Resgatada</h3>" +
                 "<p>Olá,</p>" +
-                "<p>A vantagem <b>'%s'</b> foi resgatada pelo aluno <b>%s</b>.</p>" +
-                "<p>Código do cupom para conferência: <strong>%s</strong></p>",
+                "<p>A vantagem <b style=\"color: #3b7cff;\">'%s'</b> foi resgatada pelo aluno <b style=\"color: #f59e0b;\">%s</b>.</p>" +
+                "<p>Código do cupom para conferência: <strong style=\"font-size: 18px; color: #f59e0b; letter-spacing: 2px;\">%s</strong></p>",
                 vantagem.getNome(), aluno.getNome(), cupom);
+        String msgEmpresa = String.format(htmlTemplate, corpoEmpresa);
         emailService.enviarEmail(empresa.getEmail(), "Nova Vantagem Resgatada", msgEmpresa);
 
         return convertToDTO(transacao);
